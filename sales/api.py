@@ -40,15 +40,15 @@ class ClientController(ControllerBase):
         client.codes.add(code)
         return client.codes
     
-    @route.delete("/{client_id}/cart", response=list[CodeMinSchema])
-    def remove_from_client_cart(self, payload: CodeToCartSchema, client_id: int):
+    @route.delete("/{client_id}/cart/{code_id}", response=list[CodeMinSchema])
+    def remove_from_client_cart(self, client_id: int, code_id: int):
         client = get_object_or_404(Client, id=client_id)
-        code = get_object_or_404(Code, id=payload.id)
+        code = get_object_or_404(Code, id=code_id)
         client.codes.remove(code)
         return client.codes
     
     @route.get("/{client_id}/purchases", response=list[PurchaseSchema])
-    def get_client_purchases(self, client_id: int):
+    def get_client_all_purchases(self, client_id: int):
         client = get_object_or_404(Client, id=client_id)
         return client.purchase_set.all()
 
@@ -66,6 +66,7 @@ class ClientController(ControllerBase):
 
 @api_controller("/purchase")
 class PurchaseController(ControllerBase):
-    @route.post("")
-    def create_purchase(self):
-        pass
+    @route.get("/{purchase_id}", response=PurchaseSchema)
+    def get_client_purchase(self, purchase_id: int):
+        purchase = get_object_or_404(Purchase, id=purchase_id)
+        return purchase
