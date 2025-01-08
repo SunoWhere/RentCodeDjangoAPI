@@ -18,10 +18,10 @@ class ClientController(ControllerBase):
         client = get_object_or_404(Client, id=client_id)
         return client
     
-    @route.post("/login/")
+    @route.post("/login/", response=ClientSchema)
     def login(self, payload: ClientLoginSchema):
         client = get_object_or_404(Client, email=payload.email)
-        return {"id": client.id}
+        return client
 
     @route.post("")
     def create_client(self, payload: ClientInSchema):
