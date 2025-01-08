@@ -18,13 +18,13 @@ class ClientController(ControllerBase):
         client = get_object_or_404(Client, id=client_id)
         return client
     
-    @route.post("")
-    def create_client(self, payload: ClientInSchema):
-        client = Client.objects.create(**payload.dict())
+    @route.post("/login/")
+    def login(self, payload: ClientLoginSchema):
+        client = get_object_or_404(Client, email=payload.email)
         return {"id": client.id}
 
-    @route.post("/login")
-    def login(self, payload: ClientLoginSchema):
+    @route.post("")
+    def create_client(self, payload: ClientInSchema):
         client = Client.objects.create(**payload.dict())
         return {"id": client.id}
     
