@@ -8,7 +8,7 @@ from rentcode.schemas import CodeFilterSchema, CodeMinSchema, CodeSchema, Progra
 
 @api_controller("/code")
 class CodeController(ControllerBase):
-    @route.get("", response=list[CodeMinSchema])
+    @route.get("", response=list[CodeSchema])
     def search_codes(self, filters: Query[CodeFilterSchema]):
         return filters.filter(Code.objects.select_related("language"))
 
