@@ -18,6 +18,16 @@ class ClientController(ControllerBase):
         client = get_object_or_404(Client, id=client_id)
         return client
     
+    @route.put("/{client_id}", response=ClientSchema)
+    def update_client(self, client_id: int, payload: ClientInSchema):
+        client = get_object_or_404(Client, id=client_id)
+        client.email = payload.email
+        client.firstname = payload.firstname
+        client.lastname = payload.lastname
+        client.birthday = payload.birthday
+        client.save()
+        return client
+    
     @route.post("/login/", response=ClientSchema)
     def login(self, payload: ClientLoginSchema):
         client = get_object_or_404(Client, email=payload.email)
