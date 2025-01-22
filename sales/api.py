@@ -33,10 +33,10 @@ class ClientController(ControllerBase):
         client = get_object_or_404(Client, email=payload.email)
         return client
 
-    @route.post("")
+    @route.post("", response=ClientSchema)
     def create_client(self, payload: ClientInSchema):
         client = Client.objects.create(**payload.dict())
-        return {"id": client.id}
+        return client
     
     @route.get("/{client_id}/cart", response=list[CodeMinSchema])
     def get_client_cart(self, client_id: int):
