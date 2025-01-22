@@ -6,7 +6,7 @@ from rentcode.models import Code
 class Client(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     birthday = models.DateField()
 
     codes = models.ManyToManyField(to=Code, related_name="clients")
