@@ -3,7 +3,7 @@ from django.db.models import Sum
 from ninja_extra import ControllerBase, api_controller, route
 
 from rentcode.models import Code
-from rentcode.schemas import CodeToCartSchema, CodeMinSchema
+from rentcode.schemas import CodeToCartSchema, CodeMinSchema, CodeSchema
 from sales.models import Client, Purchase
 from sales.schemas import ClientSchema, ClientInSchema, ClientLoginSchema, PurchaseSchema
 
@@ -38,19 +38,19 @@ class ClientController(ControllerBase):
         client = Client.objects.create(**payload.dict())
         return client
     
-    @route.get("/{client_id}/cart", response=list[CodeMinSchema])
+    @route.get("/{client_id}/cart", response=list[CodeSchema])
     def get_client_cart(self, client_id: int):
         client = get_object_or_404(Client, id=client_id)
         return client.codes
     
-    @route.post("/{client_id}/cart", response=list[CodeMinSchema])
+    @route.post("/{client_id}/cart", response=list[CodeSchema])
     def add_to_client_cart(self, payload: CodeToCartSchema, client_id: int):
         client = get_object_or_404(Client, id=client_id)
         code = get_object_or_404(Code, id=payload.id)
         client.codes.add(code)
         return client.codes
     
-    @route.delete("/{client_id}/cart/{code_id}", response=list[CodeMinSchema])
+    @route.delete("/{client_id}/cart/{code_id}", response=list[CodeSchema])
     def remove_from_client_cart(self, client_id: int, code_id: int):
         client = get_object_or_404(Client, id=client_id)
         code = get_object_or_404(Code, id=code_id)
