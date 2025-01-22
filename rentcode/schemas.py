@@ -41,5 +41,6 @@ class CodeFilterSchema(FilterSchema):
 
 
 class ProgrammingLanguageSchema(FilterSchema):
+    id: int
     name: str
     logo: str
